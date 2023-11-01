@@ -1,1 +1,44 @@
+package com.example.demo1;
 
+import javafx.animation.*;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+
+public class HelloApplication extends Application {
+    @Override
+    public void start(Stage stage) {
+
+        stage.setTitle("Background");
+
+        Pane pane = new Pane();
+        Scene gameScene = new Scene(pane, 956, 450);
+        Image bgImg = new Image("https://i.pinimg.com/originals/51/a5/b0/51a5b0a03ef9bad02b6157a87f775d47.jpg",956, 450, false, false);
+        ImageView background = new ImageView(bgImg);
+        ImageView background2 = new ImageView(bgImg);
+        Slider speedSlider = new Slider(0, 5, 1);
+        pane.getChildren().addAll(background, background2, speedSlider);
+
+        TranslateTransition trans1 = new TranslateTransition(Duration.seconds(10), background);
+        trans1.setFromX(0);
+        trans1.setToX(956);
+        trans1.setInterpolator(Interpolator.LINEAR);
+        trans1.setCycleCount(Animation.INDEFINITE);
+        TranslateTransition trans2 = new TranslateTransition(Duration.seconds(10), background2);
+        trans2.setFromX(-956);
+        trans2.setToX(0);
+        trans2.setCycleCount(Animation.INDEFINITE);
+        trans2.setInterpolator(Interpolator.LINEAR);
+        ParallelTransition parTrans = new ParallelTransition(trans1, trans2);
+        parTrans.rateProperty().bind(speedSlider.valueProperty());
+        parTrans.play();
+
+        stage.setScene(gameScene);
+        stage.show();
+    }
+}
