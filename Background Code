@@ -1,4 +1,4 @@
-package com.example.demo1;
+package com.example.demo;
 
 import javafx.animation.*;
 import javafx.application.Application;
@@ -10,9 +10,11 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class HelloApplication extends Application {
+public class HelloApplication extends Application
+{
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage)
+    {
 
         stage.setTitle("Background");
 
@@ -21,8 +23,16 @@ public class HelloApplication extends Application {
         Image bgImg = new Image("https://i.pinimg.com/originals/51/a5/b0/51a5b0a03ef9bad02b6157a87f775d47.jpg",956, 450, false, false);
         ImageView background = new ImageView(bgImg);
         ImageView background2 = new ImageView(bgImg);
+        Image roofimage = new Image("https://i.imgur.com/y5w2xwP.png", 956, 75, false, false);
+        ImageView roof = new ImageView(roofimage);
+        ImageView roof2 = new ImageView(roofimage);
+        Image floorimage = new Image("https://lesterbanks.com/lxb_metal/wp-content/uploads/2018/02/Working-With-Hexels-for-Drawing-Tiled-Pixel-Art.jpg", 956, 75, false, false);
+        ImageView floor = new ImageView(floorimage);
+        ImageView floor2 = new ImageView(floorimage);
+        floor.setY(375);
+        floor2.setY(375);
         Slider speedSlider = new Slider(0, 5, 1);
-        pane.getChildren().addAll(background, background2, speedSlider);
+        pane.getChildren().addAll(background, background2, roof, roof2, floor, floor2, speedSlider);
 
         TranslateTransition trans1 = new TranslateTransition(Duration.seconds(10), background);
         trans1.setFromX(0);
@@ -34,9 +44,54 @@ public class HelloApplication extends Application {
         trans2.setToX(0);
         trans2.setCycleCount(Animation.INDEFINITE);
         trans2.setInterpolator(Interpolator.LINEAR);
+           /* - ******  COMBINES SPEED OF ROOF, FLOOR AND BACKGROUND  ******
+        TranslateTransition trans3 = new TranslateTransition(Duration.seconds(10), roof);
+        trans3.setFromX(0);
+        trans3.setToX(956);
+        trans3.setInterpolator(Interpolator.LINEAR);
+        trans3.setCycleCount(Animation.INDEFINITE);
+        TranslateTransition trans4 = new TranslateTransition(Duration.seconds(10), roof2);
+        trans4.setFromX(-956);
+        trans4.setToX(0);
+        trans4.setCycleCount(Animation.INDEFINITE);
+        trans4.setInterpolator(Interpolator.LINEAR);
+        TranslateTransition trans5 = new TranslateTransition(Duration.seconds(10), floor);
+        trans5.setFromX(0);
+        trans5.setToX(956);
+        trans5.setInterpolator(Interpolator.LINEAR);
+        trans5.setCycleCount(Animation.INDEFINITE);
+        TranslateTransition trans6 = new TranslateTransition(Duration.seconds(10), floor2);
+        trans6.setFromX(-956);
+        trans6.setToX(0);
+        trans6.setCycleCount(Animation.INDEFINITE);
+        trans6.setInterpolator(Interpolator.LINEAR);
+           */
         ParallelTransition parTrans = new ParallelTransition(trans1, trans2);
         parTrans.rateProperty().bind(speedSlider.valueProperty());
         parTrans.play();
+
+        TranslateTransition trans3 = new TranslateTransition(Duration.seconds(3), roof);
+        trans3.setFromX(0);
+        trans3.setToX(956);
+        trans3.setInterpolator(Interpolator.LINEAR);
+        trans3.setCycleCount(Animation.INDEFINITE);
+        TranslateTransition trans4 = new TranslateTransition(Duration.seconds(3), roof2);
+        trans4.setFromX(-956);
+        trans4.setToX(0);
+        trans4.setCycleCount(Animation.INDEFINITE);
+        trans4.setInterpolator(Interpolator.LINEAR);
+        TranslateTransition trans5 = new TranslateTransition(Duration.seconds(3), floor);
+        trans5.setFromX(0);
+        trans5.setToX(956);
+        trans5.setInterpolator(Interpolator.LINEAR);
+        trans5.setCycleCount(Animation.INDEFINITE);
+        TranslateTransition trans6 = new TranslateTransition(Duration.seconds(3), floor2);
+        trans6.setFromX(-956);
+        trans6.setToX(0);
+        trans6.setCycleCount(Animation.INDEFINITE);
+        trans6.setInterpolator(Interpolator.LINEAR);
+        ParallelTransition partrans = new ParallelTransition(trans3, trans4, trans5, trans6);
+        partrans.play();
 
         stage.setScene(gameScene);
         stage.show();
