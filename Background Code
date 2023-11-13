@@ -7,6 +7,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -19,28 +20,28 @@ public class HelloApplication extends Application
         stage.setTitle("Background");
 
         Pane pane = new Pane();
-        Scene gameScene = new Scene(pane, 956, 450);
-        Image bgImg = new Image("https://img.itch.zone/aW1hZ2UvOTg0Nzc1LzU2MDE4MDYucG5n/794x1000/XZyJ50.png",956, 450, false, false);
+        Scene gameScene = new Scene(pane, 768, 576);
+        Image bgImg = new Image("https://img.itch.zone/aW1hZ2UvOTg0Nzc1LzU2MDE4MDYucG5n/794x1000/XZyJ50.png",768, 576, false, false);
         ImageView background = new ImageView(bgImg);
         ImageView background2 = new ImageView(bgImg);
-        Image roofimage = new Image("https://i.imgur.com/y5w2xwP.png", 956, 75, false, false);
+        Image roofimage = new Image("https://i.imgur.com/y5w2xwP.png", 768, 75, false, false);
         ImageView roof = new ImageView(roofimage);
         ImageView roof2 = new ImageView(roofimage);
-        Image floorimage = new Image("https://lesterbanks.com/lxb_metal/wp-content/uploads/2018/02/Working-With-Hexels-for-Drawing-Tiled-Pixel-Art.jpg", 956, 75, false, false);
+        Image floorimage = new Image("https://lesterbanks.com/lxb_metal/wp-content/uploads/2018/02/Working-With-Hexels-for-Drawing-Tiled-Pixel-Art.jpg", 768, 75, false, false);
         ImageView floor = new ImageView(floorimage);
         ImageView floor2 = new ImageView(floorimage);
-        floor.setY(375);
-        floor2.setY(375);
+        floor.setY(501);
+        floor2.setY(501);
         Slider speedSlider = new Slider(0, 5, 1);
         pane.getChildren().addAll(background, background2, roof, roof2, floor, floor2, speedSlider);
 
         TranslateTransition trans1 = new TranslateTransition(Duration.seconds(10), background);
         trans1.setFromX(0);
-        trans1.setToX(-956);
+        trans1.setToX(-768);
         trans1.setInterpolator(Interpolator.LINEAR);
         trans1.setCycleCount(Animation.INDEFINITE);
         TranslateTransition trans2 = new TranslateTransition(Duration.seconds(10), background2);
-        trans2.setFromX(956);
+        trans2.setFromX(768);
         trans2.setToX(0);
         trans2.setCycleCount(Animation.INDEFINITE);
         trans2.setInterpolator(Interpolator.LINEAR);
@@ -72,21 +73,21 @@ public class HelloApplication extends Application
 
         TranslateTransition trans3 = new TranslateTransition(Duration.seconds(3), roof);
         trans3.setFromX(0);
-        trans3.setToX(-956);
+        trans3.setToX(-768);
         trans3.setInterpolator(Interpolator.LINEAR);
         trans3.setCycleCount(Animation.INDEFINITE);
         TranslateTransition trans4 = new TranslateTransition(Duration.seconds(3), roof2);
-        trans4.setFromX(956);
+        trans4.setFromX(768);
         trans4.setToX(0);
         trans4.setCycleCount(Animation.INDEFINITE);
         trans4.setInterpolator(Interpolator.LINEAR);
         TranslateTransition trans5 = new TranslateTransition(Duration.seconds(3), floor);
         trans5.setFromX(0);
-        trans5.setToX(-956);
+        trans5.setToX(-768);
         trans5.setInterpolator(Interpolator.LINEAR);
         trans5.setCycleCount(Animation.INDEFINITE);
         TranslateTransition trans6 = new TranslateTransition(Duration.seconds(3), floor2);
-        trans6.setFromX(956);
+        trans6.setFromX(768);
         trans6.setToX(0);
         trans6.setCycleCount(Animation.INDEFINITE);
         trans6.setInterpolator(Interpolator.LINEAR);
