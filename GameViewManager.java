@@ -34,8 +34,11 @@ public class GameViewManager
     private ImageView[] rocks;
     Random randomPositionGenerator;
 
-    /*private final static int PLAYER_RADIUS = 24;
-    private final static int ROCK_RADIUS = 24;*/
+    private double rockSpeed = 2;
+
+    private final static int PLAYER_RADIUS = 20;
+    private final static int ROCK_RADIUS = 20;
+
 
     public GameViewManager()
     {
@@ -80,64 +83,10 @@ public class GameViewManager
     {
         this.menuStage = menuStage;
         this.menuStage.hide();
-        createBackground();
         createPlayer();
         createGameElements();
         createGameLoop();
         gameStage.show();
-    }
-
-    private void createBackground()
-    {
-        Image bgImg = new Image("https://img.itch.zone/aW1hZ2UvOTg0Nzc1LzU2MDE4MDYucG5n/794x1000/XZyJ50.png",800, 600, false, false);
-        ImageView background = new ImageView(bgImg);
-        ImageView background2 = new ImageView(bgImg);
-        Image roofimage = new Image("https://i.imgur.com/y5w2xwP.png", 800, 75, false, false);
-        ImageView roof = new ImageView(roofimage);
-        ImageView roof2 = new ImageView(roofimage);
-        Image floorimage = new Image("https://lesterbanks.com/lxb_metal/wp-content/uploads/2018/02/Working-With-Hexels-for-Drawing-Tiled-Pixel-Art.jpg", 800, 75, false, false);
-        ImageView floor = new ImageView(floorimage);
-        ImageView floor2 = new ImageView(floorimage);
-        floor.setY(525);
-        floor2.setY(525);
-
-        TranslateTransition trans1 = new TranslateTransition(Duration.seconds(10), background);
-        trans1.setFromX(0);
-        trans1.setToX(-800);
-        trans1.setInterpolator(Interpolator.LINEAR);
-        trans1.setCycleCount(Animation.INDEFINITE);
-        TranslateTransition trans2 = new TranslateTransition(Duration.seconds(10), background2);
-        trans2.setFromX(800);
-        trans2.setToX(0);
-        trans2.setCycleCount(Animation.INDEFINITE);
-        trans2.setInterpolator(Interpolator.LINEAR);
-        ParallelTransition parTrans = new ParallelTransition(trans1, trans2);
-        parTrans.play();
-
-        TranslateTransition trans3 = new TranslateTransition(Duration.seconds(3), roof);
-        trans3.setFromX(0);
-        trans3.setToX(-800);
-        trans3.setInterpolator(Interpolator.LINEAR);
-        trans3.setCycleCount(Animation.INDEFINITE);
-        TranslateTransition trans4 = new TranslateTransition(Duration.seconds(3), roof2);
-        trans4.setFromX(800);
-        trans4.setToX(0);
-        trans4.setCycleCount(Animation.INDEFINITE);
-        trans4.setInterpolator(Interpolator.LINEAR);
-        TranslateTransition trans5 = new TranslateTransition(Duration.seconds(3), floor);
-        trans5.setFromX(0);
-        trans5.setToX(-800);
-        trans5.setInterpolator(Interpolator.LINEAR);
-        trans5.setCycleCount(Animation.INDEFINITE);
-        TranslateTransition trans6 = new TranslateTransition(Duration.seconds(3), floor2);
-        trans6.setFromX(800);
-        trans6.setToX(0);
-        trans6.setCycleCount(Animation.INDEFINITE);
-        trans6.setInterpolator(Interpolator.LINEAR);
-        ParallelTransition partrans = new ParallelTransition(trans3, trans4, trans5, trans6);
-        partrans.play();
-
-        gamePane.getChildren().addAll(background, background2, roof, roof2, floor, floor2);
     }
 
     private void createGameElements() {
@@ -151,14 +100,14 @@ public class GameViewManager
 
     private void moveGameElements() {
         for (int i = 0; i < rocks.length; i++) {
-            rocks[i].setX(rocks[i].getX()-4);
+            rocks[i].setX(rocks[i].getX() - rockSpeed);
         }
     }
 
     private void checkElements() {
         for (int i = 0; i < rocks.length; i++) {
             if(rocks[i].getX() + rocks[i].getFitWidth() < -100)
-                setNewElementPosition(rocks[i]);
+            setNewElementPosition(rocks[i]);
         }
     }
 
@@ -182,12 +131,19 @@ public class GameViewManager
 
     private void createGameLoop() {
         gameTimer = new AnimationTimer() {
-
+            private long frameCounter = 0;
             @Override
             public void handle (long now) {
                 movePlayer();
                 moveGameElements();
                 checkElements();
+                checkCollision();
+
+                if (frameCounter % 2000 == 0)
+                {
+                    rockSpeed = rockSpeed + .25;
+                }
+                frameCounter++;
             }
         };
 
@@ -196,19 +152,32 @@ public class GameViewManager
     private void movePlayer() {
         int newY = 0;
 
-        if (isSpacePressed) {
-            newY = (int) (playerView.getY() - 4);
-        } else {
-            newY = (int) (playerView.getY() + 4);
-        }
+            if (isSpacePressed) {
+                newY = (int) (playerView.getY() - 2);
+            } else {
+                newY = (int) (playerView.getY() + 2);
+            }
 
-        int minY = 50;  // Minimum Y position
-        int maxY = 500;  // Maximum Y position
+            int minY = 50;  // Minimum Y position
+            int maxY = 500;  // Maximum Y position
 
-        // Check if the new Y position is within the boundaries
-        if (newY >= minY && newY <= maxY) {
-            playerView.setY(newY);
+            // Check if the new Y position is within the boundaries
+            if (newY >= minY && newY <= maxY) {
+                playerView.setY(newY);
+            }
+    }
+    private void checkCollision()  //**********************************************************************************************************************
+    {
+        for(int i = 0; i < rocks.length; i++){
+            if ((PLAYER_RADIUS + ROCK_RADIUS) > calculateDistance(playerView.getX() , rocks[i].getX() , playerView.getY() , rocks[i].getY() )){
+                gameStage.close();
+                gameTimer.stop();
+                menuStage.show();
+            }
         }
     }
-
+    private double calculateDistance(double x1, double x2, double y1, double y2)  //*******************************************************************************
+    {
+        return Math.sqrt(Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2));
+    }
 }
