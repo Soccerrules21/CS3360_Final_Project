@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import view.ViewManager;
 
-
 public class Main extends Application
 {
     @Override
@@ -14,15 +13,18 @@ public class Main extends Application
         {
             ViewManager manager = new ViewManager();
             stage = manager.getMainStage();
+            stage.setTitle("Bat Bro");
             stage.show();
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+           e.printStackTrace();
         }
+
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         launch(args);
     }
 }
