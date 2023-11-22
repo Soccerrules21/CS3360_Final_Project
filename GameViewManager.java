@@ -1,14 +1,16 @@
 package view;
 
-import javafx.animation.AnimationTimer;
+import javafx.animation.*;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.Objects;
 import java.util.Random;
@@ -38,6 +40,10 @@ public class GameViewManager
 
     private final static int PLAYER_RADIUS = 20;
     private final static int ROCK_RADIUS = 20;
+    private long frameCounter = 0;
+    private long score = 0;
+    private Label scoreLabel;
+
 
 
     public GameViewManager()
@@ -77,6 +83,7 @@ public class GameViewManager
         gameStage = new Stage();
         gameStage.setScene(gameScene);
 
+
     }
 
     public void createNewGame(Stage menuStage)
@@ -87,11 +94,14 @@ public class GameViewManager
         createPlayer();
         createGameElements();
         createGameLoop();
+        scoreLabel = new Label("Score: 0");
+        scoreLabel.setLayoutX(675);
+        scoreLabel.setLayoutY(25);
+        gamePane.getChildren().add(scoreLabel);
         gameStage.show();
     }
 
-    private void createBackground()
-    {
+    private void createBackground() {
         Image bgImg = new Image("https://img.itch.zone/aW1hZ2UvOTg0Nzc1LzU2MDE4MDYucG5n/794x1000/XZyJ50.png",800, 600, false, false);
         ImageView background = new ImageView(bgImg);
         ImageView background2 = new ImageView(bgImg);
@@ -185,15 +195,16 @@ public class GameViewManager
 
     private void createGameLoop() {
         gameTimer = new AnimationTimer() {
-            private long frameCounter = 0;
+
             @Override
             public void handle (long now) {
                 movePlayer();
                 moveGameElements();
                 checkElements();
                 checkCollision();
+                updateScoreLabel();
 
-                if (frameCounter % 2000 == 0)
+                if (frameCounter % 1500 == 0)
                 {
                     rockSpeed = rockSpeed + .25;
                 }
@@ -233,5 +244,12 @@ public class GameViewManager
     private double calculateDistance(double x1, double x2, double y1, double y2)  //*******************************************************************************
     {
         return Math.sqrt(Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2));
+    }
+
+    private void updateScoreLabel() {
+        if (frameCounter % 6 == 0) {
+            score++;
+            scoreLabel.setText("Score: " + score);
+        }
     }
 }
