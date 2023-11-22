@@ -1,5 +1,9 @@
 package view;
 
+import javafx.animation.Animation;
+import javafx.animation.Interpolator;
+import javafx.animation.ParallelTransition;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -14,6 +18,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.menuButtons;
 import model.textBoxes;
 
@@ -44,8 +49,8 @@ public class ViewManager
         mainScene = new Scene(mainPane, WIDTH, HEIGHT);
         mainStage = new Stage();
         mainStage.setScene(mainScene);
+        createBackground();
         createButtons();
-        createBackground();//********************************************************************calling the create background method************************************
         createLogo();
         howToPlay();
         createMusic();
@@ -108,6 +113,7 @@ public class ViewManager
         scoresText.setLayoutY(-50);
         group.getChildren().add(scoresText);
     }
+
     private void createCreditsButton()
     {
         menuButtons creditButton = new menuButtons("CREDIT");
@@ -132,7 +138,10 @@ public class ViewManager
         creditText.setLayoutX(300);
         creditText.setLayoutY(-50);
         group.getChildren().add(creditText);
+
+        //Button xButton = new button
     }
+
     private void createExitButton()
     {
         menuButtons exitButton = new menuButtons("EXIT");
@@ -146,9 +155,56 @@ public class ViewManager
         });
     }
 
-    private void createBackground()//*************************************************************************************************************************************************
+    private void createBackground()
     {
+        Image bgImg = new Image("https://img.itch.zone/aW1hZ2UvOTg0Nzc1LzU2MDE4MDYucG5n/794x1000/XZyJ50.png",800, 600, false, false);
+        ImageView background = new ImageView(bgImg);
+        ImageView background2 = new ImageView(bgImg);
+        /*Image roofimage = new Image("https://i.imgur.com/y5w2xwP.png", 800, 75, false, false);
+        ImageView roof = new ImageView(roofimage);
+        ImageView roof2 = new ImageView(roofimage);
+        Image floorimage = new Image("https://lesterbanks.com/lxb_metal/wp-content/uploads/2018/02/Working-With-Hexels-for-Drawing-Tiled-Pixel-Art.jpg", 800, 75, false, false);
+        ImageView floor = new ImageView(floorimage);
+        ImageView floor2 = new ImageView(floorimage);
+        floor.setY(525);
+        floor2.setY(525);*/
 
+        TranslateTransition trans1 = new TranslateTransition(Duration.seconds(10), background);
+        trans1.setFromX(0);
+        trans1.setToX(-800);
+        trans1.setInterpolator(Interpolator.LINEAR);
+        trans1.setCycleCount(Animation.INDEFINITE);
+        TranslateTransition trans2 = new TranslateTransition(Duration.seconds(10), background2);
+        trans2.setFromX(800);
+        trans2.setToX(0);
+        trans2.setCycleCount(Animation.INDEFINITE);
+        trans2.setInterpolator(Interpolator.LINEAR);
+        ParallelTransition parTrans = new ParallelTransition(trans1, trans2);
+        parTrans.play();
+
+        /*TranslateTransition trans3 = new TranslateTransition(Duration.seconds(3), roof);
+        trans3.setFromX(0);
+        trans3.setToX(-800);
+        trans3.setInterpolator(Interpolator.LINEAR);
+        trans3.setCycleCount(Animation.INDEFINITE);
+        TranslateTransition trans4 = new TranslateTransition(Duration.seconds(3), roof2);
+        trans4.setFromX(800);
+        trans4.setToX(0);
+        trans4.setCycleCount(Animation.INDEFINITE);
+        trans4.setInterpolator(Interpolator.LINEAR);
+        TranslateTransition trans5 = new TranslateTransition(Duration.seconds(3), floor);
+        trans5.setFromX(0);
+        trans5.setToX(-800);
+        trans5.setInterpolator(Interpolator.LINEAR);
+        trans5.setCycleCount(Animation.INDEFINITE);
+        TranslateTransition trans6 = new TranslateTransition(Duration.seconds(3), floor2);
+        trans6.setFromX(800);
+        trans6.setToX(0);
+        trans6.setCycleCount(Animation.INDEFINITE);
+        trans6.setInterpolator(Interpolator.LINEAR);
+        ParallelTransition partrans = new ParallelTransition(trans3, trans4, trans5, trans6);
+        partrans.play();*/
+        mainPane.getChildren().addAll(background, background2);
     }
 
     private void createLogo()
@@ -169,6 +225,7 @@ public class ViewManager
     howToPlayText.setX(12);
     howToPlayText.setY(580);
     howToPlayText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 11));
+    howToPlayText.setFill(Color.WHITE);
     mainPane.getChildren().add(howToPlayText);
     }
 
