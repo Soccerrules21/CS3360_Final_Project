@@ -2,17 +2,26 @@ package view;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.menuButtons;
-//import model.menuSubscenes;
+import model.textBoxes;
 
-import java.util.ArrayList;
-import java.util.List;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import java.util.Objects;
+
+import java.util.*;
 
 public class ViewManager
 {
@@ -21,11 +30,12 @@ public class ViewManager
     private AnchorPane mainPane;
     private Scene mainScene;
     private Stage mainStage;
-
+    private MediaPlayer mediaPlayer;
     private final static int MENU_BUTTONS_START_X = 300;
     private final static int MENU_BUTTONS_START_Y = 200;
     List<menuButtons> MENUBUTTONS;
 
+    Scene scoreScene, creditScene;
 
     public ViewManager()
     {
@@ -35,16 +45,10 @@ public class ViewManager
         mainStage = new Stage();
         mainStage.setScene(mainScene);
         createButtons();
-        createBackground();
+        createBackground();//********************************************************************calling the create background method************************************
         createLogo();
-
-        /*menuSubscenes subScene = new menuSubscenes(); //NOT COMPLETE
-        subScene.setLayoutX(100);
-        subScene.setLayoutY(100);
-        mainPane.getChildren().add(subScene);*/
-    }
-
-    private void createSubScenes(){ //****************************************** NOT COMPLETE
+        howToPlay();
+        createMusic();
 
     }
 
@@ -84,21 +88,66 @@ public class ViewManager
     {
         menuButtons scoreButton = new menuButtons("SCORES");
         addMenuButton(scoreButton);
+        scoreButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                mainStage.setScene(scoreScene);
+            }
+        });
+
+        Group group = new Group();
+        scoreScene = new Scene(group, 800, 600, Color.LIGHTGRAY);
+        Rectangle r = new Rectangle(200,100,400,400);
+        r.setFill(Color.GRAY);
+        r.setStrokeWidth(4);
+        r.setStroke(Color.DARKGRAY);
+        group.getChildren().add(r);
+
+        textBoxes scoresText = new textBoxes("SCORES");
+        scoresText.setLayoutX(300);
+        scoresText.setLayoutY(-50);
+        group.getChildren().add(scoresText);
     }
     private void createCreditsButton()
     {
-        menuButtons creditsButton = new menuButtons("CREDIT");
-        addMenuButton(creditsButton);
+        menuButtons creditButton = new menuButtons("CREDIT");
+        addMenuButton(creditButton);
+
+        creditButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                mainStage.setScene(creditScene);
+            }
+        });
+
+        Group group = new Group();
+        creditScene = new Scene(group, 800, 600, Color.LIGHTGRAY);
+        Rectangle r = new Rectangle(200,100,400,400);
+        r.setFill(Color.GRAY);
+        r.setStrokeWidth(4);
+        r.setStroke(Color.DARKGRAY);
+        group.getChildren().add(r);
+
+        textBoxes creditText = new textBoxes("CREDIT");
+        creditText.setLayoutX(300);
+        creditText.setLayoutY(-50);
+        group.getChildren().add(creditText);
     }
     private void createExitButton()
     {
         menuButtons exitButton = new menuButtons("EXIT");
         addMenuButton(exitButton);
+
+        exitButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                mainStage.close();
+            }
+        });
     }
 
-    private void createBackground()//************************************************************************************
+    private void createBackground()//*************************************************************************************************************************************************
     {
-
 
     }
 
@@ -112,5 +161,22 @@ public class ViewManager
         logoView.setLayoutX(150);
         logoView.setLayoutY(0);
         mainPane.getChildren().add(logoView);
+    }
+
+    public void howToPlay()
+    {
+    Text howToPlayText = new Text("HOW TO PLAY: HOLD SPACE TO MOVE BAT BRO, AVOID THE ROCKS, THE FURTHER YOU PROGRESS, THE HIGHER YOUR SCORE");
+    howToPlayText.setX(12);
+    howToPlayText.setY(580);
+    howToPlayText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 11));
+    mainPane.getChildren().add(howToPlayText);
+    }
+
+    private void createMusic() {
+        String musicFile = "/player/8-bit-background-music-for-arcade-game-come-on-mario-164702.mp3";
+        Media sound = new Media(Objects.requireNonNull(getClass().getResource(musicFile)).toString());
+        mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.play();
     }
 }
