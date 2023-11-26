@@ -176,7 +176,7 @@ public class GameViewManager
 
     private void setNewElementPosition(ImageView image) {
 
-        int minY = 50;  // Adjust this value based on your floor position
+        int minY = 50;  
         int maxY = 500;
         image.setY(-randomPositionGenerator.nextInt(maxY - minY) + maxY);
         image.setX(randomPositionGenerator.nextInt(GAME_WIDTH) + 800);
