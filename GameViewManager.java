@@ -11,7 +11,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.util.Objects;
 import java.util.Random;
 
@@ -223,15 +222,14 @@ public class GameViewManager
                 newY = (int) (playerView.getY() + 2);
             }
 
-            int minY = 50;  // Minimum Y position
-            int maxY = 500;  // Maximum Y position
+            int minY = 50; 
+            int maxY = 500; 
 
-            // Check if the new Y position is within the boundaries
             if (newY >= minY && newY <= maxY) {
                 playerView.setY(newY);
             }
     }
-    private void checkCollision()  //**********************************************************************************************************************
+    private void checkCollision()  
     {
         for(int i = 0; i < rocks.length; i++){
             if ((PLAYER_RADIUS + ROCK_RADIUS) > calculateDistance(playerView.getX() , rocks[i].getX() , playerView.getY() , rocks[i].getY() )){
@@ -241,7 +239,7 @@ public class GameViewManager
             }
         }
     }
-    private double calculateDistance(double x1, double x2, double y1, double y2)  //*******************************************************************************
+    private double calculateDistance(double x1, double x2, double y1, double y2)  
     {
         return Math.sqrt(Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2));
     }
