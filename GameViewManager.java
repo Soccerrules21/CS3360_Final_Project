@@ -43,8 +43,6 @@ public class GameViewManager
     private long score = 0;
     private Label scoreLabel;
 
-
-
     public GameViewManager()
     {
         initializeStage();
