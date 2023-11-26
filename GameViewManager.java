@@ -192,6 +192,22 @@ public class GameViewManager
         gamePane.getChildren().add(playerView);
     }
 
+    private void movePlayer() {
+        int newY = 0;
+
+            if (isSpacePressed) {
+                newY = (int) (playerView.getY() - 2);
+            } else {
+                newY = (int) (playerView.getY() + 2);
+            }
+
+            int minY = 50; 
+            int maxY = 500; 
+
+            if (newY >= minY && newY <= maxY) {
+                playerView.setY(newY);
+            }
+    }
     private void createGameLoop() {
         gameTimer = new AnimationTimer() {
 
@@ -213,22 +229,7 @@ public class GameViewManager
 
         gameTimer.start();
     }
-    private void movePlayer() {
-        int newY = 0;
-
-            if (isSpacePressed) {
-                newY = (int) (playerView.getY() - 2);
-            } else {
-                newY = (int) (playerView.getY() + 2);
-            }
-
-            int minY = 50; 
-            int maxY = 500; 
-
-            if (newY >= minY && newY <= maxY) {
-                playerView.setY(newY);
-            }
-    }
+    
     private void checkCollision()  
     {
         for(int i = 0; i < rocks.length; i++){
