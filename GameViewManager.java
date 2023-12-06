@@ -13,41 +13,54 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.util.Objects;
 import java.util.Random;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class GameViewManager
 {
     private AnchorPane gamePane;
     private Scene gameScene;
     private Stage gameStage;
-
     private static final int GAME_WIDTH = 800;
     private static final int GAME_HEIGHT = 600;
+    private MediaPlayer mediaPlayer;
 
     private Stage menuStage;
     Image player = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/player/guy.png")));
     ImageView playerView = new ImageView(player);
     Image rock = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/player/rock.png")));
     ImageView rockView = new ImageView(rock);
+    Image coin = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/player/Coin.png")));
+    ImageView Coinview = new ImageView(coin);
 
     private boolean isSpacePressed;
     private AnimationTimer gameTimer;
 
     private ImageView[] rocks;
+    private ImageView[] coins;
     Random randomPositionGenerator;
+    Random randomPositionGenerator2;
 
-    private double rockSpeed = 2;
+    private double rockSpeed = 4;
+    private double coinSpeed = 4;
 
     private final static int PLAYER_RADIUS = 20;
     private final static int ROCK_RADIUS = 20;
+    private final static int COIN_RADIUS = 20;
     private long frameCounter = 0;
     private long score = 0;
     private Label scoreLabel;
+    private long CoinCount = 0;
+    private Label label;
+
+
 
     public GameViewManager()
     {
         initializeStage();
         createKeyListeners();
         randomPositionGenerator = new Random();
+        randomPositionGenerator2 = new Random();
     }
 
     private void createKeyListeners()
@@ -90,11 +103,15 @@ public class GameViewManager
         createBackground();
         createPlayer();
         createGameElements();
+        createGameCoins();
         createGameLoop();
         scoreLabel = new Label("Score: 0");
         scoreLabel.setLayoutX(675);
         scoreLabel.setLayoutY(25);
-        gamePane.getChildren().add(scoreLabel);
+        label = new Label("Coins: ");
+        label.setLayoutX(600);
+        label.setLayoutY(25);
+        gamePane.getChildren().addAll(scoreLabel, label);
         gameStage.show();
     }
 
@@ -159,25 +176,63 @@ public class GameViewManager
         }
     }
 
+    private void createGameCoins()
+    {
+        coins = new ImageView[4];
+        for(int i = 0; i < coins.length; i++)
+        {
+            coins[i] = new ImageView(coin);
+            setNewCoinPosition(coins[i]);
+            gamePane.getChildren().add(coins[i]);
+        }
+    }
+
     private void moveGameElements() {
         for (int i = 0; i < rocks.length; i++) {
             rocks[i].setX(rocks[i].getX() - rockSpeed);
         }
     }
 
+    private void moveGameCoins()
+    {
+        for(int i = 0; i < coins.length; i++)
+        {
+            coins[i].setX(coins[i].getX() - coinSpeed);
+        }
+    }
+
     private void checkElements() {
         for (int i = 0; i < rocks.length; i++) {
             if(rocks[i].getX() + rocks[i].getFitWidth() < -100)
-            setNewElementPosition(rocks[i]);
+                setNewElementPosition(rocks[i]);
+        }
+    }
+
+    private void checkCoins()
+    {
+        for (int i = 0; i < coins.length; i++)
+        {
+            if (coins[i].getX() + coins[i].getFitWidth() < -100)
+            {
+                setNewCoinPosition(coins[i]);  ;
+            }
         }
     }
 
     private void setNewElementPosition(ImageView image) {
 
-        int minY = 50;  
+        int minY = 50;
         int maxY = 500;
         image.setY(-randomPositionGenerator.nextInt(maxY - minY) + maxY);
         image.setX(randomPositionGenerator.nextInt(GAME_WIDTH) + 800);
+    }
+
+    private void setNewCoinPosition(ImageView image)
+    {
+        int minY = 50;
+        int maxY = 500;
+        image.setY(-randomPositionGenerator2.nextInt(maxY - minY) + maxY);
+        image.setX(randomPositionGenerator2.nextInt(GAME_WIDTH) + 800);
     }
 
     private void createPlayer()
@@ -193,19 +248,20 @@ public class GameViewManager
     private void movePlayer() {
         int newY = 0;
 
-            if (isSpacePressed) {
-                newY = (int) (playerView.getY() - 2);
-            } else {
-                newY = (int) (playerView.getY() + 2);
-            }
+        if (isSpacePressed) {
+            newY = (int) (playerView.getY() - 4);
+        } else {
+            newY = (int) (playerView.getY() + 4);
+        }
 
-            int minY = 50; 
-            int maxY = 500; 
+        int minY = 50;
+        int maxY = 500;
 
-            if (newY >= minY && newY <= maxY) {
-                playerView.setY(newY);
-            }
+        if (newY >= minY && newY <= maxY) {
+            playerView.setY(newY);
+        }
     }
+
     private void createGameLoop() {
         gameTimer = new AnimationTimer() {
 
@@ -213,13 +269,17 @@ public class GameViewManager
             public void handle (long now) {
                 movePlayer();
                 moveGameElements();
+                moveGameCoins();
                 checkElements();
+                checkCoins();
                 checkCollision();
+                checkCollisionCoin();
                 updateScoreLabel();
+                updateCoins();
 
-                if (frameCounter % 1500 == 0)
+                if (frameCounter % 600 == 0)
                 {
-                    rockSpeed = rockSpeed + .25;
+                    rockSpeed = rockSpeed + 1;
                 }
                 frameCounter++;
             }
@@ -227,8 +287,8 @@ public class GameViewManager
 
         gameTimer.start();
     }
-    
-    private void checkCollision()  
+
+    private void checkCollision()
     {
         for(int i = 0; i < rocks.length; i++){
             if ((PLAYER_RADIUS + ROCK_RADIUS) > calculateDistance(playerView.getX() , rocks[i].getX() , playerView.getY() , rocks[i].getY() )){
@@ -238,7 +298,30 @@ public class GameViewManager
             }
         }
     }
-    private double calculateDistance(double x1, double x2, double y1, double y2)  
+
+    private void checkCollisionCoin()
+    {
+        for(int i = 0; i < coins.length; i++)
+        {
+            if((PLAYER_RADIUS + COIN_RADIUS) > calculateDistance(playerView.getX() , coins[i].getX(), playerView.getY(), coins[i].getY() ))
+            {
+                CoinCount++;
+                setNewCoinPosition(coins[i]);
+                CoinSound();
+            }
+        }
+    }
+
+    void CoinSound()
+    {
+        String Musicfile = "/player/CollectCoin.mp3";
+        Media sound2 = new Media(Objects.requireNonNull(getClass().getResource(Musicfile)).toString());
+        mediaPlayer = new MediaPlayer(sound2);
+        mediaPlayer.setVolume(1.0);
+        mediaPlayer.play();
+    }
+
+    private double calculateDistance(double x1, double x2, double y1, double y2)
     {
         return Math.sqrt(Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2));
     }
@@ -248,5 +331,9 @@ public class GameViewManager
             score++;
             scoreLabel.setText("Score: " + score);
         }
+    }
+    void updateCoins()
+    {
+        label.setText("Coins: " + CoinCount);
     }
 }
