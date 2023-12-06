@@ -54,7 +54,6 @@ public class ViewManager
         createLogo();
         howToPlay();
         createMusic();
-
     }
 
     public Stage getMainStage()
@@ -160,14 +159,6 @@ public class ViewManager
         Image bgImg = new Image("https://img.itch.zone/aW1hZ2UvOTg0Nzc1LzU2MDE4MDYucG5n/794x1000/XZyJ50.png",800, 600, false, false);
         ImageView background = new ImageView(bgImg);
         ImageView background2 = new ImageView(bgImg);
-        /*Image roofimage = new Image("https://i.imgur.com/y5w2xwP.png", 800, 75, false, false);
-        ImageView roof = new ImageView(roofimage);
-        ImageView roof2 = new ImageView(roofimage);
-        Image floorimage = new Image("https://lesterbanks.com/lxb_metal/wp-content/uploads/2018/02/Working-With-Hexels-for-Drawing-Tiled-Pixel-Art.jpg", 800, 75, false, false);
-        ImageView floor = new ImageView(floorimage);
-        ImageView floor2 = new ImageView(floorimage);
-        floor.setY(525);
-        floor2.setY(525);*/
 
         TranslateTransition trans1 = new TranslateTransition(Duration.seconds(10), background);
         trans1.setFromX(0);
@@ -182,28 +173,6 @@ public class ViewManager
         ParallelTransition parTrans = new ParallelTransition(trans1, trans2);
         parTrans.play();
 
-        /*TranslateTransition trans3 = new TranslateTransition(Duration.seconds(3), roof);
-        trans3.setFromX(0);
-        trans3.setToX(-800);
-        trans3.setInterpolator(Interpolator.LINEAR);
-        trans3.setCycleCount(Animation.INDEFINITE);
-        TranslateTransition trans4 = new TranslateTransition(Duration.seconds(3), roof2);
-        trans4.setFromX(800);
-        trans4.setToX(0);
-        trans4.setCycleCount(Animation.INDEFINITE);
-        trans4.setInterpolator(Interpolator.LINEAR);
-        TranslateTransition trans5 = new TranslateTransition(Duration.seconds(3), floor);
-        trans5.setFromX(0);
-        trans5.setToX(-800);
-        trans5.setInterpolator(Interpolator.LINEAR);
-        trans5.setCycleCount(Animation.INDEFINITE);
-        TranslateTransition trans6 = new TranslateTransition(Duration.seconds(3), floor2);
-        trans6.setFromX(800);
-        trans6.setToX(0);
-        trans6.setCycleCount(Animation.INDEFINITE);
-        trans6.setInterpolator(Interpolator.LINEAR);
-        ParallelTransition partrans = new ParallelTransition(trans3, trans4, trans5, trans6);
-        partrans.play();*/
         mainPane.getChildren().addAll(background, background2);
     }
 
@@ -221,18 +190,19 @@ public class ViewManager
 
     public void howToPlay()
     {
-    Text howToPlayText = new Text("HOW TO PLAY: HOLD SPACE TO MOVE BAT BRO, AVOID THE ROCKS, THE FURTHER YOU PROGRESS, THE HIGHER YOUR SCORE");
-    howToPlayText.setX(12);
-    howToPlayText.setY(580);
-    howToPlayText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 11));
-    howToPlayText.setFill(Color.WHITE);
-    mainPane.getChildren().add(howToPlayText);
+        Text howToPlayText = new Text("HOW TO PLAY: HOLD SPACE TO MOVE BAT BRO, AVOID THE ROCKS, THE FURTHER YOU PROGRESS, THE HIGHER YOUR SCORE");
+        howToPlayText.setX(12);
+        howToPlayText.setY(580);
+        howToPlayText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 11));
+        howToPlayText.setFill(Color.WHITE);
+        mainPane.getChildren().add(howToPlayText);
     }
 
     private void createMusic() {
-        String musicFile = "/player/8-bit-background-music-for-arcade-game-come-on-mario-164702.mp3";
+        String musicFile = "/player/cavemusic.mp3";
         Media sound = new Media(Objects.requireNonNull(getClass().getResource(musicFile)).toString());
         mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.setVolume(0.1);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.play();
     }
