@@ -14,8 +14,7 @@ public class menuButtons extends Button
 {
     private static final String BUTTON_STYLE = "-fx-background-color: GRAY; -fx-border-width: 4px; -fx-border-color: DARKGRAY;";
 
-    public menuButtons(String text)
-    {
+    public menuButtons(String text) {
         setText(text);
         setButtonFont();
         setPrefWidth(190);
@@ -24,8 +23,7 @@ public class menuButtons extends Button
         initializeButtonListener();
     }
 
-    private void setButtonFont()
-    {
+    private void setButtonFont() {
         try {
             String FRONT_PATH = "src/main/java/model/resource/dogica.ttf";
             setFont(Font.loadFont(new FileInputStream(FRONT_PATH),23));
@@ -34,20 +32,17 @@ public class menuButtons extends Button
         }
     }
 
-    private void setButtonStyle()
-    {
+    private void setButtonStyle() {
         setStyle(BUTTON_STYLE);
         setPrefHeight(49);
         setLayoutY(getLayoutY());
     }
 
-    private void initializeButtonListener()
-    {
+    private void initializeButtonListener() {
         setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (event.getButton().equals(MouseButton.PRIMARY))
-                {
+                if (event.getButton().equals(MouseButton.PRIMARY)) {
                     setButtonStyle();
                 }
             }
