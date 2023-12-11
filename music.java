@@ -7,9 +7,8 @@ import javafx.scene.media.MediaPlayer;
 import java.io.File;
 import java.util.Objects;
 
-
-public class music {
-
+public class music
+{
     MediaPlayer mediaPlayer;
 
     @FXML
@@ -17,7 +16,6 @@ public class music {
         String fileName = "player/8-bit-background-music-for-arcade-game-come-on-mario-164702.mp3";
         playHitSound(fileName);
     }
-
 
     private void playHitSound(String fileName){
         String path = Objects.requireNonNull(getClass().getResource(fileName)).getPath();
