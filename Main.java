@@ -7,24 +7,17 @@ import view.ViewManager;
 public class Main extends Application
 {
     @Override
-    public void start(Stage stage)
-    {
-        try
-        {
+    public void start(Stage stage) {
+        try {
             ViewManager manager = new ViewManager();
             stage = manager.getMainStage();
             stage.setTitle("Bat Bro");
             stage.show();
-        }
-        catch(Exception e)
-        {
+        } catch(Exception e) {
            e.printStackTrace();
         }
-
     }
-
-    public static void main(String[] args) 
-    {
+    public static void main(String[] args) {
         launch(args);
     }
 }
